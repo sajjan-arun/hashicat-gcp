@@ -17,12 +17,13 @@ resource "google_compute_network" "hashicat" {
   auto_create_subnetworks = false
 }
 
-resource "google_compute_subnetwork" "hashicat" {
-  name          = "${var.prefix}-subnet"
-  region        = var.region
-  network       = google_compute_network.hashicat.self_link
-  ip_cidr_range = var.subnet_prefix
+resource "google_compute_network" "vpc_network" {
+  project                 = "my-project-name"
+  name                    = "vpc-network"
+  auto_create_subnetworks = true
+  mtu                     = 1460
 }
+
 
 resource "google_compute_firewall" "http-server" {
   name    = "${var.prefix}-default-allow-ssh-http"
